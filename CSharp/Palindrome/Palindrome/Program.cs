@@ -9,6 +9,15 @@
             Console.WriteLine("Enter a phrase to evaluate:");
             input = Console.ReadLine();
 
+            //clear out the spaces and punctuation
+            string cleanedInput = new string(input.Where(c => char.IsLetterOrDigit(c)).ToArray()).ToLower();
+
+            Console.WriteLine(cleanedInput);
+
+
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadKey();  
+
         }
     }
 }
