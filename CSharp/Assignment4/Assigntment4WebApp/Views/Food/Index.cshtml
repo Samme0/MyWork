@@ -3,7 +3,44 @@
 @{
     ViewData["Title"] = "Index";
 }
-<h1>Index</h1>
-@{
-  
+<h1>Food Orders</h1>
+
+<p>@Model.Message</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>Total</th>
+            <th>Beverage</th>
+            <th>Appetizer</th>
+            <th>Sandwich</th>
+            <th>Dessert</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+<tbody>
+@foreach (var order in Model.Orders)
+{
+    <tr>
+        <td>@order.OrderId</td>
+        <td>@order.OrderTotal</td>
+
+                <td>@order.BeverageItem</td>
+                <td>@order.AppetizerItem</td>
+                <td>@order.SandwichItem</td>
+                <td>@order.DessertItem</td>
+
+
+        <td> <a asp-action="Edit" asp-route-id="@order.OrderId">Edit</a>
+        <td> <a asp-action="Delete" asp-route-id="@order.OrderId">Delete</a>
+            </td> 
+    </tr>
 }
+</tbody>
+</table>
+<a asp-action="Create">Create New Order</a>
+   
+
+  
+

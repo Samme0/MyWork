@@ -3,11 +3,13 @@ using Assigntment4WebApp.ViewModels.Order;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Security.Policy;
 
-namespace Assigntment4WebApp.ViewModels.Food
+namespace Assigntment4WebApp.ViewModels 
 {
     public class OrderNewViewModel
     {
-        public OrderModel? Order { get; set; } = new OrderModel();
+        public FooOrder Order { get; set; } = new FooOrder();
+
+        public OrderModel? fooOrder { get; set; } = new OrderModel();
         public List<SelectListItem>? BeverageList { get; set; } = new List<SelectListItem>();
         public List<SelectListItem>? AppetizerList { get; set; } = new List<SelectListItem>();
         public List<SelectListItem>? SandwichList { get; set; } = new List<SelectListItem>();

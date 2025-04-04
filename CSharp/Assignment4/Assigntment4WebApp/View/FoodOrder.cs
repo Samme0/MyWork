@@ -2,7 +2,7 @@
 
 namespace Assigntment4WebApp.View
 {
-    public class Order
+    public class FooOrder : DataPrep //<< changed to FooOrder it Wasn't liking Order? 
     {
         public string OrderId { get; set; } = Guid.NewGuid().ToString(); // assign random key value
         public decimal OrderTotal { get; set; }
@@ -15,4 +15,5 @@ namespace Assigntment4WebApp.View
         [Required]
         public string DessertItem { get; set; } // DessertItem value selected from dropdown
     }
+    // can't figure out why it's sill null
 }

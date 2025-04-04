@@ -6,7 +6,7 @@ namespace Assigntment4WebApp.ViewFunctions
     public class FoodViewFunctions
     {
         // Private reusable method to return proper type of food list for view models
-        private List<SelectListItem> GetFoodItemList(string category)
+        public List<SelectListItem> GetFoodItemList(string category)
         {
             List<SelectListItem> foodSelectList = new List<SelectListItem>();
             var foodEntityList = DataLists.FoodList.Where(m => m.Category == category).ToList();

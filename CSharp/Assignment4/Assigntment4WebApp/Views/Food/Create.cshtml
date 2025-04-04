@@ -1,0 +1,24 @@
+﻿@model Assigntment4WebApp.ViewModels.OrderNewViewModel
+
+<h2>Create Order</h2>
+
+<form asp-action="Create" method="post">
+    <div>
+        <label>Beverage</label>
+        <select asp-for="Order.BeverageItem" asp-items="Model.BeverageList"></select>
+    </div>
+    <div>
+        <label>Appetizer</label>
+        <select asp-for="Order.AppetizerItem" asp-items="Model.AppetizerList"></select>
+    </div>
+    <div>
+        <label>Sandwich</label>
+        <select asp-for="Order.SandwichItem" asp-items="Model.SandwichList"></select>
+    </div>
+    <div>
+        <label>Dessert</label>
+        <select asp-for="Order.DessertItem" asp-items="Model.DessertList"></select>
+    </div>
+    <button type="submit">Create Order</button>
+    <a asp-action="Index">Back to List</a>
+</form>

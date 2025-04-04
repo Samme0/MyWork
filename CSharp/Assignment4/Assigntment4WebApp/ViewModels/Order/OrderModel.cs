@@ -1,7 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Assigntment4WebApp.Models.Data;
+using System.ComponentModel.DataAnnotations;
 
 namespace Assigntment4WebApp.ViewModels.Order
 {
+
     public class OrderModel
     {
         public string OrderId { get; set; } = Guid.NewGuid().ToString(); // assign random key value
@@ -15,4 +17,4 @@ namespace Assigntment4WebApp.ViewModels.Order
         [Required]
         public string DessertItem { get; set; }
     }
-}
+}  
