@@ -1,173 +1,141 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Assigntment4WebApp.Models.Data;
+﻿using Assigntment4WebApp.Models.Data;
+using Assigntment4WebApp.Models.View;
+using Assigntment4WebApp.ViewFunctions;
 using Assigntment4WebApp.ViewModels.Food;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Drawing.Text;
 using System.Linq;
-using Assigntment4WebApp.View;
-using Assigntment4WebApp.ViewModels;
-using Assigntment4WebApp.Models;
-using Assigntment4WebApp.ViewModels.Order;
 
-public class FoodController : Controller
+namespace Assigntment4WebApp.Controllers
 {
-    // GET: Food/Create
-    public IActionResult Create()
+    public class FoodController : Controller
     {
-        var viewModel = new OrderNewViewModel
+        private readonly FoodViewFunctions _foodViewFunctions = new FoodViewFunctions();
+        // code to return the view model to the index view
+        // get: food
+        public IActionResult Index()
         {
-            BeverageList = GetFoodItemList("Beverage"),
-            AppetizerList = GetFoodItemList("Appetizer"),
-            SandwichList = GetFoodItemList("Sandwich"),
-            DessertList = GetFoodItemList("Dessert"),
-            Order = new FooOrder() // Initialize the Order object
-        };
-
-        return View(viewModel);
-    }
-
-    // POST: Food/Create
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public IActionResult Create(OrderNewViewModel viewModel)
-    {
-        if (ModelState.IsValid)
-        {
-            // Calculate order total based on selected items
-            viewModel.Order.OrderTotal =
-            DataLists.FoodList.FirstOrDefault(f => f.Item == viewModel.Order.BeverageItem)?.ItemCost ?? 0 +
-            DataLists.FoodList.FirstOrDefault(f => f.Item == viewModel.Order.AppetizerItem)?.ItemCost ?? 0 +
-            DataLists.FoodList.FirstOrDefault(f => f.Item == viewModel.Order.SandwichItem)?.ItemCost ?? 0 +
-            DataLists.FoodList.FirstOrDefault(f => f.Item == viewModel.Order.DessertItem)?.ItemCost ?? 0;
-
-            DataLists.OrderList.Add(new OrderEntity
+            try
             {
-                OrderId = viewModel.Order.OrderId,
-                OrderTotal = viewModel.Order.OrderTotal,
-                BeverageItem = viewModel.Order.BeverageItem,
-                AppetizerItem = viewModel.Order.AppetizerItem,
-                SandwichItem = viewModel.Order.SandwichItem,
-                DessertItem = viewModel.Order.DessertItem
-            });
-
-            return RedirectToAction("Index"); // Redirect to a list of orders or another action
-        }
-
-        // Repopulate dropdowns if model state is invalid
-        viewModel.BeverageList = GetFoodItemList("Beverage");
-        viewModel.AppetizerList = GetFoodItemList("Appetizer");
-        viewModel.SandwichList = GetFoodItemList("Sandwich");
-        viewModel.DessertList = GetFoodItemList("Dessert");
-
-        return View(viewModel);
-    }
-
-    // GET: Food/Edit/{id}
-    public IActionResult Edit(string id)
-    {
-        var order = DataLists.OrderList.FirstOrDefault(o => o.OrderId == id);
-        if (order == null)
-        {
-            return NotFound();
-        }
-
-        var viewModel = new OrderNewViewModel
-        {
-            Order = new FooOrder
-            {
-                OrderId = order.OrderId,
-                BeverageItem = order.BeverageItem,
-                AppetizerItem = order.AppetizerItem,
-                SandwichItem = order.SandwichItem,
-                DessertItem = order.DessertItem,
-                OrderTotal = order.OrderTotal
-            },
-            BeverageList = GetFoodItemList("Beverage"),
-            AppetizerList = GetFoodItemList("Appetizer"),
-            SandwichList = GetFoodItemList("Sandwich"),
-            DessertList = GetFoodItemList("Dessert")
-        };
-
-        return View(viewModel);
-    }
-
-    // POST: Food/Edit/{id}
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public IActionResult Edit(string id, OrderNewViewModel viewModel)
-    {
-        if (ModelState.IsValid)
-        {
-            var order = DataLists.OrderList.FirstOrDefault(o => o.OrderId == id);
-            if (order == null)
-            {
-                return NotFound();
+                var viewModel = new IndexViewModel
+                {
+                    Orders = DataLists.OrderList,
+                    Message = "Here are your food orders"
+                };
+                return View(viewModel);
             }
-
-            // Update order details
-            order.BeverageItem = viewModel.Order.BeverageItem;
-            order.AppetizerItem = viewModel.Order.AppetizerItem;
-            order.SandwichItem = viewModel.Order.SandwichItem;
-            order.DessertItem = viewModel.Order.DessertItem;
-
-            // Recalculate total
-            order.OrderTotal =
-            DataLists.FoodList.FirstOrDefault(f => f.Item == order.BeverageItem)?.ItemCost ?? 0 +
-            DataLists.FoodList.FirstOrDefault(f => f.Item == order.AppetizerItem)?.ItemCost ?? 0 +
-            DataLists.FoodList.FirstOrDefault(f => f.Item == order.SandwichItem)?.ItemCost ?? 0 +
-            DataLists.FoodList.FirstOrDefault(f => f.Item == order.DessertItem)?.ItemCost ?? 0;
-
-            return RedirectToAction("Index"); // Redirect to the order list
+            catch (Exception ex)
+            {
+                ViewBag.ErrorMessage = "An error occurred while retrieving orders: " + ex.Message;
+                return View("Error");
+            }
+           
         }
 
-        // Repopulate dropdowns if model state is invalid
-        viewModel.BeverageList = GetFoodItemList("Beverage");
-        viewModel.AppetizerList = GetFoodItemList("Appetizer");
-        viewModel.SandwichList = GetFoodItemList("Sandwich");
-        viewModel.DessertList = GetFoodItemList("Dessert");
+        // get: food/create
 
-        return View(viewModel);
-    }
-
-    // GET: Food/Delete/{id}
-    public IActionResult Delete(string id)
-    {
-        var order = DataLists.OrderList.FirstOrDefault(o => o.OrderId == id);
-        if (order == null)
+    public IActionResult Create()
         {
-            return NotFound();
+            try
+            {
+                var viewModel = new OrderNewViewModel
+                {
+                    BeverageList = _foodViewFunctions.GetBeverageList(),
+                    AppetizerList = _foodViewFunctions.GetAppetizerList(),
+                    SandwichList = _foodViewFunctions.GetSandWichList(),
+                    DessertList = _foodViewFunctions.GetDessertList()
+                };
+                return View(viewModel);
+            }
+            catch (Exception ex)
+            {
+                ViewBag.ErrorMessage = "An error occurred while preparing the create form: " + ex.Message;
+                return View("Error");
+            }
         }
-
-        return View(order);
-    }
-
-    // POST: Food/Delete/{id}
-    [HttpPost, ActionName("Delete")]
-    [ValidateAntiForgeryToken]
-    public IActionResult DeleteConfirmed(string id)
-    {
-        var order = DataLists.OrderList.FirstOrDefault(o => o.OrderId == id);
-        if (order != null)
+        // POST: food/Create
+        [HttpPost]
+        public IActionResult Create(OrderNewViewModel model)
         {
-            DataLists.OrderList.Remove(order);
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var order = new OrderEntity
+                    {
+                        BeverageItem = model.Order.BeverageItem,
+                        AppetizerItem = model.Order.AppetizerItem,
+                        DessertItem = model.Order.DessertItem,
+                        OrderTotal = CalculateOrderTotal(model.Order)
+                    };
+                    DataLists.OrderList.Add(order);
+                    return RedirectToAction("Index");
+                }
+                model.BeverageList = _foodViewFunctions.GetBeverageList();
+                model.AppetizerList = _foodViewFunctions.GetAppetizerList();
+                model.SandwichList = _foodViewFunctions.GetSandWichList();
+                model.DessertList = _foodViewFunctions.GetDessertList();
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                ViewBag.ErrorMessage = "An error occurred while creating the order: " + ex.Message;
+                return View("Error",model);
+            }
         }
-        return RedirectToAction("Index"); // Redirect to the order list
-    }
-
-    // Helper method to get food items by category for dropdowns
-    private List<SelectListItem> GetFoodItemList(string category)
-    {
-        return DataLists.FoodList
-        .Where(f => f.Category == category)
-        .Select(f => new SelectListItem
+        // Get: food/edit/{id}
+        public IActionResult Delete(string id)
         {
-            Text = f.Item,
-            Value = f.Item
-        }).ToList();
-    }
+            try
+            {
+                var order = DataLists.OrderList.FirstOrDefault(o => o.OrderId == id);
+                if (order == null)
+                {
+                    return NotFound();
+                }
+                return View(order);
+            }
+            catch (Exception ex)
+            {
+                ViewBag.ErrorMessage = "An error occurred while preparing to delete the order: " + ex.Message;
+                return View("Error");
+            }
+        }
+        // post: food/Delete/{id}
+        [HttpPost ActionName("Delete")] // <<< FIX <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+        public IActionResult DeleteConfirmed(string id)
+        {
+            try
+            {
+                var ORDER = DataLists.OrderList.FirstOrDefault(o => o.OrderId == id);
+                if (ORDER != null)
+                {
+                    DataLists.OrderList.Remove(order); // FIX <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+                }
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                ViewBag.ErrorMessage = "An error occurred while deleting the order: " + ex.Message;
+                return View("Error");
+            }
+          
+        }
+        // Method to calculate the total order cost 
+        private decimal CalculateOrderTotal(Order order)
+        {
+            decimal total = 0;
 
-    // GET: Food/Index
-    public IActionResult Index()
-    {
-        return View(DataLists.OrderList); // Display list of orders
+            total += DataLists.FoodList.FirstOrDefault(f => f.Item == order.BeverageItem)?.ItemCost ?? 0;
+
+            total += DataLists.FoodList.FirstOrDefault(f => f.Item == order.AppetizerItem)?.ItemCost ?? 0;
+
+            total += DataLists.FoodList.FirstOrDefault(f => f.Item == order.SandwichItem)?.ItemCost ?? 0;
+
+            total += DataLists.FoodList.FirstOrDefault(f => f.Item == order.DessertItem)?.ItemCost ?? 0;
+
+            return total;
+        }
     }
 }

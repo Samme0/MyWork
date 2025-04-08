@@ -1,7 +1,5 @@
 ﻿using Assigntment4WebApp.Models.Data;
-using Assigntment4WebApp.View;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Collections.Generic;
+using Assigntment4WebApp.Models.View;
 
 namespace Assigntment4WebApp.ViewModels.Food
 {
@@ -10,9 +8,5 @@ namespace Assigntment4WebApp.ViewModels.Food
         public List<OrderEntity> Orders { get; set; } = new List<OrderEntity>();
 
         public string Message { get; set; } = string.Empty;
-
-        public string SearchTerm { get; set; } = string.Empty;
-
-        public int TottalOrders => Orders.Count;
     }
 }

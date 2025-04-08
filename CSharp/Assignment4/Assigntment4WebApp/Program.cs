@@ -26,7 +26,5 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-DataPrep dataPrep = new DataPrep();
-dataPrep.LoadFoodEntities();
 
 app.Run();
