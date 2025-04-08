@@ -35,7 +35,7 @@ namespace Assigntment4WebApp.Controllers
 
         // get: food/create
 
-    public IActionResult Create()
+    public IActionResult Creat()
         {
             try
             {
@@ -103,15 +103,16 @@ namespace Assigntment4WebApp.Controllers
             }
         }
         // post: food/Delete/{id}
-        [HttpPost ActionName("Delete")] // <<< FIX <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+        [HttpPost, ActionName("Delete")] 
+
         public IActionResult DeleteConfirmed(string id)
         {
             try
             {
-                var ORDER = DataLists.OrderList.FirstOrDefault(o => o.OrderId == id);
-                if (ORDER != null)
+                var order = DataLists.OrderList.FirstOrDefault(o => o.OrderId == id);
+                if (order != null)
                 {
-                    DataLists.OrderList.Remove(order); // FIX <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+                    DataLists.OrderList.Remove(order); 
                 }
                 return RedirectToAction("Index");
             }
