@@ -35,7 +35,7 @@ namespace Assigntment4WebApp.Controllers
 
         // get: food/create
 
-    public IActionResult Creat()
+    public IActionResult Create()
         {
             try
             {
@@ -46,7 +46,7 @@ namespace Assigntment4WebApp.Controllers
                     SandwichList = _foodViewFunctions.GetSandWichList(),
                     DessertList = _foodViewFunctions.GetDessertList()
                 };
-                return View(viewModel);
+                return View("New",viewModel);
             }
             catch (Exception ex)
             {
@@ -60,8 +60,15 @@ namespace Assigntment4WebApp.Controllers
         {
             try
             {
+                if (model == null || model.Order == null)
+                {
+                    return BadRequest("Model or Order cannot be null.");
+                }
+
                 if (ModelState.IsValid)
                 {
+
+
                     var order = new OrderEntity
                     {
                         BeverageItem = model.Order.BeverageItem,
@@ -69,6 +76,7 @@ namespace Assigntment4WebApp.Controllers
                         DessertItem = model.Order.DessertItem,
                         OrderTotal = CalculateOrderTotal(model.Order)
                     };
+
                     DataLists.OrderList.Add(order);
                     return RedirectToAction("Index");
                 }
@@ -76,7 +84,7 @@ namespace Assigntment4WebApp.Controllers
                 model.AppetizerList = _foodViewFunctions.GetAppetizerList();
                 model.SandwichList = _foodViewFunctions.GetSandWichList();
                 model.DessertList = _foodViewFunctions.GetDessertList();
-                return View(model);
+                return View("New",model);
             }
             catch (Exception ex)
             {

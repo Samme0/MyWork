@@ -14,12 +14,15 @@
 }
 
 <form asp-action="Create" method="post">
+
+    @Html.AntiForgeryToken() <!--Anit-forgeryToken--->
+
     <div class="form-group">
         <label for="BeverageItem">Select Beverage:</label>
         <select asp-for="Order.BeverageItem" 
         class="form-control" asp-items="Model.BeverageList"></select>
         <span asp-validation-for="Order.BeverageItem"
-        clss="text-danger"></span>
+        class="text-danger"></span>
     </div>
 
     <div class="form-group">
@@ -28,7 +31,7 @@
         <span asp-validation-for="Order.AppetizerItem" class="text-danger"></span>
     </div>
 
-    <div class="form-check-group">
+    <div class="form-group">
         <label for="SandwichItem">Select Sandwich:</label>
         <select asp-for="Order.SandwichItem" class="form-control" asp-items="Model.SandwichList"></select>
         <span asp-validation-for="Order.SandwichItem" class="text-danger"></span>
