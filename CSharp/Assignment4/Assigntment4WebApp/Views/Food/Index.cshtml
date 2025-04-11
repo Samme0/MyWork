@@ -10,7 +10,8 @@
 
 @if (!string.IsNullOrEmpty(Model.Message))
 {
-    <div> class="alert alert-info"
+    <div>
+        class="alert alert-info"
         @Model.Message
     </div>
 }
@@ -18,35 +19,37 @@
 <a class="btn btn-primary"
 href="@Url.Action("Create")">Create New Order</a>
 
-<table> class="table"
-<thead>
-    <tr>
-        <th>Order ID</th>
-        <th>Total</th>
-        <th>Actions</th>
-    </tr>
-</thead>
-<tbody>
-    @if (Model.Orders != null && Model.Orders.Count > 0)
-    {
-        foreach (var order in Model.Orders)
+<table>
+    class="table"
+    <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>Total</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model?.Orders != null && Model.Orders.Count > 0)
+        {
+
+            @foreach (var order in Model.Orders)
+            {
+                <tr>
+                    <td>@order.OrderId</td>
+                    <td>@order.OrderTotal.ToString("C")</td>
+                    <td>
+                        <a class="btn btn-warning" href="@Url.Action("Edit", order)">Edit</a>
+                        <a class="btn btn-danger" herf="@Url.Action("Delete", new { IDataTokensMetadata = order.OrderId })">Delete</a>
+                    </td>
+                </tr>
+            }
+        }
+        else
         {
             <tr>
-                <td>@order.OrderId</td>
-                <td>@order.OrderTotal.ToString("C")</td>
-                <td>
-                    <a class="btn btn-warning" href= "@Url.Action("Edit", new { id = order.OrderId })">Edit</a>
-                    <a class="btn btn-danger" herf="@Url.Action("Delete", new { IDataTokensMetadata = order.OrderId })">Delete></a>
-                </td>
+                <td colspan="3" class="text-center">No orders found.</td>
             </tr>
         }
-    }
-    else
-    {
-        <tr> 
-            <td colspan="3" class="text-center">No orders found.</td>
-        </tr>
-    }
-</tbody>
+    </tbody>
 </table>
 
