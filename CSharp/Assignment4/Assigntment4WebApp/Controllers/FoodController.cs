@@ -30,12 +30,12 @@ namespace Assigntment4WebApp.Controllers
                 ViewBag.ErrorMessage = "An error occurred while retrieving orders: " + ex.Message;
                 return View("Error");
             }
-           
+
         }
 
         // get: food/create
 
-    public IActionResult Create()
+        public IActionResult Create()
         {
             try
             {
@@ -46,7 +46,7 @@ namespace Assigntment4WebApp.Controllers
                     SandwichList = _foodViewFunctions.GetSandWichList(),
                     DessertList = _foodViewFunctions.GetDessertList()
                 };
-                return View("New",viewModel);
+                return View("New", viewModel);
             }
             catch (Exception ex)
             {
@@ -54,6 +54,7 @@ namespace Assigntment4WebApp.Controllers
                 return View("Error");
             }
         }
+
         // POST: food/Create
         [HttpPost]
         public IActionResult Create(OrderNewViewModel model)
@@ -84,15 +85,18 @@ namespace Assigntment4WebApp.Controllers
                 model.AppetizerList = _foodViewFunctions.GetAppetizerList();
                 model.SandwichList = _foodViewFunctions.GetSandWichList();
                 model.DessertList = _foodViewFunctions.GetDessertList();
-                return View("New",model);
+                return View("New", model);
             }
             catch (Exception ex)
             {
                 ViewBag.ErrorMessage = "An error occurred while creating the order: " + ex.Message;
-                return View("Error",model);
+                return View("Error", model);
             }
         }
         // Get: food/edit/{id}
+
+        // post: food/Delete/{id}
+        [HttpPost, ActionName("Delete")]
         public IActionResult Delete(string id)
         {
             try
@@ -110,8 +114,19 @@ namespace Assigntment4WebApp.Controllers
                 return View("Error");
             }
         }
-        // post: food/Delete/{id}
-        [HttpPost, ActionName("Delete")] 
+
+        public IActionResult Edit(OrderEditViewModel model)
+        {
+            try
+            {
+                return View("Edit", model);
+            }
+            catch (Exception ex)
+            {
+                ViewBag.ErrorMessage = "An error occurred while preparing to edit the order: " + ex.Message;
+                return View("Error");
+            }
+        }
 
         public IActionResult DeleteConfirmed(string id)
         {
@@ -120,7 +135,7 @@ namespace Assigntment4WebApp.Controllers
                 var order = DataLists.OrderList.FirstOrDefault(o => o.OrderId == id);
                 if (order != null)
                 {
-                    DataLists.OrderList.Remove(order); 
+                    DataLists.OrderList.Remove(order);
                 }
                 return RedirectToAction("Index");
             }
@@ -129,7 +144,7 @@ namespace Assigntment4WebApp.Controllers
                 ViewBag.ErrorMessage = "An error occurred while deleting the order: " + ex.Message;
                 return View("Error");
             }
-          
+
         }
         // Method to calculate the total order cost 
         private decimal CalculateOrderTotal(Order order)
@@ -146,5 +161,7 @@ namespace Assigntment4WebApp.Controllers
 
             return total;
         }
+
+        
     }
 }
