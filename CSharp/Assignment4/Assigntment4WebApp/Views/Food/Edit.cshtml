@@ -6,47 +6,58 @@
 
 <h2>Edit Order</h2>
 
-@if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+@if (!string.IsNullOrEmpty(ViewBag?.ErrorMessage))
 {
     <div class="alert alertdanger">
-        @ViewBag.ErrorMessage
+        @ViewBag?.ErrorMessage
     </div>
 }
 
 <form asp-action="Edit" method="post">
     @Html.AntiForgeryToken() <!---Anti-forgery token--->
 
+    <div id="ordInfo">
+        <p>
+            Editing Order for Order ID: @Model.Order.OrderId;
+        </p>
+    </div>
+
     <input type="hidden" asp-for="Order.OrderId" />
+    @{
+        <div class="form-group">
+            <label formaction="BeverageItem">Select Beverage:</label>
+            <select asp-for="Order.BeverageItem" class="form-control" asp-items="Model.BeverageList"></select>
+            <span asp-validation-for="Order.BeverageItem" class="text-danger"></span>
+        </div>
 
-    <div class="form-group">
-        <label formaction="BeverageItem">Select Beverage:</label>
-        <select asp-for="Order.BeverageItem" class="form-control" asp-items="Model.BeverageList"></select>
-        <span asp-validation-for="Order.BeverageItem" class="text-danger"></span>
-    </div>
 
-    <div class="form-group">
-        <label for="AppetizerItem">Select Appetizer:</label>
-        <select asp-for="Order.AppetizerItem" class="form-control" asp-items="Model.AppetizerList"></select>
-        <span asp-validation-for="Order.AppetizerItem" class="text-danger"></span>
-    </div>
+        <div class="form-group">
+            <label for="AppetizerItem">Select Appetizer:</label>
+            <select asp-for="Order.AppetizerItem" class="form-control" asp-items="Model.AppetizerList"></select>
+            <span asp-validation-for="Order.AppetizerItem" class="text-danger"></span>
+        </div>
 
-    <div class="form-group">
-        <label for ="SandwichItem">Select Sandwich:</label>
-        <select asp-for="Order.SandwichItem" class="form-control" asp-items="Model.SandwichList"></select>
-        <span asp-validation-for="Order.SandwichItem" class="text-danger"></span>
-    </div>
+        <div class="form-group">
+            <label for="SandwichItem">Select Sandwich:</label>
+            <select asp-for="Order.SandwichItem" class="form-control" asp-items="Model.SandwichList"></select>
+            <span asp-validation-for="Order.SandwichItem" class="text-danger"></span>
+        </div>
 
-    <div class="form-group">
-        <label for="DessertItem"> Select Dessert:</label>
-        <select asp-for="Order.DessertItem" class="form-control" asp-items="Model.DessertList"></select>
-        <span asp-validation-for="Order.DessertItem" class="text-danger"></span>
-    </div>
-
+        <div class="form-group">
+            <label for="DessertItem"> Select Dessert:</label>
+            <select asp-for="Order.DessertItem" class="form-control" asp-items="Model.DessertList"></select>
+            <span asp-validation-for="Order.DessertItem" class="text-danger"></span>
+        </div>
+    }
+ 
     <button type="submit" class="btn btn-primary">Save Changes</button>
     <a class="btn btn-secondary" href="@Url.Action("Index")">back to Orders</a>
 </form>
 
 @section Scripts {
     @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartail");}
+        await Html.RenderPartialAsync(@"_ValidationScriptsPartial.cshtml").ConfigureAwait(false);
+
+       
+    }
 }
