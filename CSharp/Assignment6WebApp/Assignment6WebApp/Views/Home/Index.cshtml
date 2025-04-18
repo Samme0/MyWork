@@ -1,0 +1,17 @@
+﻿@model Assignment6WebApp.ViewModels.Home.IndexViewModel
+
+<h2>Sentences</h2>
+<form asp-action="LoadContent" method="post">
+    <button type="submit">Initial Load</button>
+</form>
+
+<form asp-action="DescendingOutput" method="post">
+    <button type="submit">Descending Output</button>
+</form>
+
+<form asp-action="AscendingOutput" method="post">
+    <button type="submit">Ascending Output</button>
+</form>
+
+<textarea cols="50" asp-for="Sentences" rows="10" style="white-space: nowrap; overflow:
+auto;">@Model.Sentences</textarea>

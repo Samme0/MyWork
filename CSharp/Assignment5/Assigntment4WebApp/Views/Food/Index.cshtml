@@ -1,0 +1,63 @@
+﻿@model Assigntment5WebApp.ViewModels.Food.SearchViewModel
+
+<h2>Orders</h2>
+
+<form asp-action="Search" method="post">
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        <label for="SelectedBeverage">Select Beverage:</label>
+        <select asp-for="SelectedBeverage" class="form-control" asp-items="Model.BeverageList"></select>
+    </div>
+
+    <div class="form-group">
+        <label for="SelectedAppetizer">Select Appetizer:</label>
+        <select asp-for="SelectedAppetizer" class="form-control" asp-items="Model.AppetizerList"></select>
+    </div>
+
+    <div class="form-group">
+        <label for="SelectedSandwich">Select Sandwich:</label>
+        <select asp-for="SelectedSandwich" class="form-control" asp-items="Model.SandwichList"></select>
+    </div>
+
+    <div class="form-group">
+        <label for="SelectedDessert">Select Dessert:</label>
+        <select asp-for="SelectedDessert" class="form-control" asp-items="Model.DessertList"></select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Search</button>
+</form>
+
+@if (Model.Orders.Any())
+{
+    <h3>Order List</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Total</th>
+                <th>Beverage</th>
+                <th>Appetizer</th>
+                <th>Sandwich</th>
+                <th>Dessert</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in Model.Orders)
+            {
+                <tr>
+                    <td>@order.OrderId</td>
+                    <td>@order.OrderTotal.ToString("C")</td>
+                    <td>@order.BeverageItem</td>
+                    <td>@order.AppetizerItem</td>
+                    <td>@order.SandwichItem</td>
+                    <td>@order.DessertItem</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No orders found.</p>
+}

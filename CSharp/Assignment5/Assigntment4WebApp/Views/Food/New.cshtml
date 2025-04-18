@@ -1,0 +1,53 @@
+﻿@model Assigntment4WebApp.ViewModels.Food.OrderNewViewModel
+
+@{
+    ViewBag.Title = "Create New Order";
+}
+
+<h2>Create New Order</h2>
+
+@if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+{
+    <div class="alert alert-danger">
+        @ViewBag.ErrorMessage
+    </div>
+}
+
+<form asp-action="Create" method="post">
+
+    @Html.AntiForgeryToken() <!--Anit-forgeryToken--->
+
+    <div class="form-group">
+        <label for="BeverageItem">Select Beverage:</label>
+        <select asp-for="Order.BeverageItem" 
+        class="form-control" asp-items="Model.BeverageList"></select>
+        <span asp-validation-for="Order.BeverageItem"
+        class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="AppetizerItem">Select Appetizer:</label>
+        <select asp-for="Order.AppetizerItem" class="form-control" asp-items="Model.AppetizerList"></select>
+        <span asp-validation-for="Order.AppetizerItem" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="SandwichItem">Select Sandwich:</label>
+        <select asp-for="Order.SandwichItem" class="form-control" asp-items="Model.SandwichList"></select>
+        <span asp-validation-for="Order.SandwichItem" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="DessertItem">Select Dessert:</label>
+        <select asp-for="Order.DessertItem" class="form-control" asp-items="Model.DessertList"></select>
+        <span asp-validation-for="Order.DessertItem" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create Order</button>
+    <a class="btn btn-secondary" href="@Url.Action("Index")">Back to Orders</a>
+</form>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

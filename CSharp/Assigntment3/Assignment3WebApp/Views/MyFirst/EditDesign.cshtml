@@ -1,0 +1,101 @@
+﻿@model Assignment3WebApp.ViewModels.EditDesignViewModel
+@{
+    ViewData["Title"] = "Edit Design";
+}
+<h1>Edit Design</h1>
+<form asp-action="YourActionMethod" method="post">
+    <div id="mainDiv">
+        <div id="topDiv">
+            <h2>Personal Information</h2>
+            <div class="form-group">
+                <label asp-for="FirstName" class="control-label"></label>
+                <input asp-for="FirstName" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="LastName" class="control-label"></label>
+                <input asp-for="LastName" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="StreetAddress" class="control-label"></label>
+                <input asp-for="StreetAddress" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="City" class="control-label"></label>
+                <input asp-for="City" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="State" class="control-label"></label>
+                <input asp-for="State" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ZipCode" class="control-label"></label>
+                <input asp-for="ZipCode" class="form-control" />
+            </div>
+        </div>
+
+        <div id="middleLeftDiv" class="form-section">
+            <h2>Gender</h2>
+            <div>
+                @foreach (var item in Model.Gender)
+                {
+                    <div class="form-check">
+                        <input asp-for="Gender" type="radio" value="@item" class="form-check-input" />
+                        <label class="form-check-label">@item</label>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div id="rightDiv" class="form-section">
+            <h2>Countries</h2>
+            <div class="form-group">
+                <label asp-for="Countries" class="control-label"></label>
+                <select asp-for="Countries" class="form-control" asp-items="@(new SelectList(Model.Countries))">
+                    <option value="">Select Country</option>
+                </select>
+            </div>
+
+            <div class="myDivBuffer">
+                <h3>My Favorite Sports</h3>
+                @if (Model.SportsList != null && Model.SportsList.Count > 0)
+                {
+                    foreach (var sport in Model.SportsList)
+                    {
+                        <div>@sport.Football</div>
+                        <div>@sport.BasketBall</div>
+                        <div>@sport.Baseball</div>
+                        <div>@sport.Soccer</div>
+                    }
+                }
+                else
+                {
+                    <div>No favorite sports available.</div>
+                }
+            </div>
+
+            <div class="myDivBuffer">
+                <h3>My Friends</h3>
+                @if (Model.FriendList != null && Model.FriendList.Count > 0)
+                {
+                    foreach (var friend in Model.FriendList)
+                    {
+                        <div>@friend.Firstname @friend.LastName, located in @friend.City, @friend.State</div>
+                    }
+                }
+                else
+                {
+                    <div>No friends available.</div>
+                }
+            </div>
+        </div>
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </div>
+</form>
