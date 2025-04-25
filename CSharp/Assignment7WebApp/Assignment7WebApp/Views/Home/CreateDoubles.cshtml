@@ -1,0 +1,16 @@
+﻿@model Assignment7WebApp.ViewModels.Home.CreateDoublesViewModel
+
+@{
+    ViewData["Title"] = "Create Doubles";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="CreateDoubles" method="post">
+    <button type="submit">Create Doubles</button>
+</form>
+
+@if (!string.IsNullOrEmpty(Model.Message))
+{
+    <p style="color: green;">@Model.Message</p>
+}

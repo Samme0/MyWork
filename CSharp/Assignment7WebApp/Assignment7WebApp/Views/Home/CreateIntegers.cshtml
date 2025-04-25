@@ -1,0 +1,16 @@
+﻿@model Assignment7WebApp.ViewModels.Home.CreateIntegersViewModel
+
+@{
+    ViewData["Title"] = "Create Integers";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="CreateIntegers" method="post">
+    <button type="submit">Create Integers</button>
+</form>
+
+@if (!string.IsNullOrEmpty(Model.Message))
+{
+    <p style="color: green;" >@Model.Message</p>
+}

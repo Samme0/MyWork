@@ -1,0 +1,27 @@
+﻿@model Assignment7WebApp.ViewModels.Home.IndexViewModel
+
+@{
+    ViewData["Title"] = "Search";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="Search" method="post">
+    <input type="hidden" name="listType" value="int" />
+    <label>Search Integer:</label>
+    <input type="text" name="searchKey" value="@Model.SearchKey" style="width:150px; margin-left:5px;" />
+    <button type="submit" style="margin-left:10px;">Search Int</button>
+</form>
+
+<form asp-action="Search" method="post" style="margin-top:10px;">
+    <input type="hidden" name="listType" value="double" />
+    <label>Search Double:</label>
+    <input type="text" name="searchKey" value="@Model.SearchKey" style="width:150px; margin-left:5px;" />
+    <button type="submit" style="margin-left:10px;">Search Double</button>
+</form>
+
+@if (!string.IsNullOrEmpty(Model.SearchResults))
+{
+    <h3 style="margin-top:20px;">Search Results:</h3>
+    <input readonly style="width:100%;" value="@Model.SearchResults" />
+}
